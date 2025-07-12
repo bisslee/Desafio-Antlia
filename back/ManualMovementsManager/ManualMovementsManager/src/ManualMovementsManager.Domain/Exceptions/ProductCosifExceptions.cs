@@ -8,6 +8,11 @@ namespace ManualMovementsManager.Domain.Exceptions
             : base($"Product COSIF with product code '{productCode}' and COSIF code '{cosifCode}' was not found.", "PRODUCT_COSIF_NOT_FOUND", 404)
         {
         }
+
+        public ProductCosifNotFoundException(Guid id) 
+            : base($"Product COSIF with ID '{id}' was not found.", "PRODUCT_COSIF_NOT_FOUND", 404)
+        {
+        }
     }
 
     public class ProductCosifCodeAlreadyExistsException : DomainException

@@ -1,6 +1,8 @@
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Repositories;
 using ManualMovementsManager.Domain.Specifications;
+using ManualMovementsManager.Domain.Exceptions;
+using System;
 using System.Threading.Tasks;
 
 namespace ManualMovementsManager.Domain.Specifications.Products
@@ -11,15 +13,28 @@ namespace ManualMovementsManager.Domain.Specifications.Products
 
         public ProductMustExistByIdSpecification(IProductReadRepository productReadRepository)
         {
-            _productReadRepository = productReadRepository;
+            _productReadRepository = productReadRepository ?? throw new ArgumentNullException(nameof(productReadRepository));
         }
 
-        public async Task<bool> IsSatisfiedByAsync(Product entity)
+        public bool IsSatisfiedBy(Product product)
         {
-            var product = await _productReadRepository.GetByIdAsync(entity.Id);
-            return product != null;
+            // Para compatibilidade, mas não deve ser usado
+            throw new NotImplementedException("Use IsSatisfiedByAsync for async operations");
         }
 
-        public string ErrorMessage => "Product must exist";
+        public async Task<bool> IsSatisfiedByAsync(Product product)
+        {
+            if (product == null || product.Id == Guid.Empty)
+                throw new ProductNotFoundException("Invalid product ID provided.");
+
+            var existingProduct = await _productReadRepository.GetByIdAsync(product.Id);
+            
+            if (existingProduct == null)
+                throw new ProductNotFoundException(product.Id);
+
+            return true;
+        }
+
+        public string ErrorMessage => "Product not found.";
     }
 } 

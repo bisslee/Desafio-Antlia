@@ -8,6 +8,11 @@ namespace ManualMovementsManager.Domain.Exceptions
             : base($"Product with code '{productCode}' was not found.", "PRODUCT_NOT_FOUND", 404)
         {
         }
+
+        public ProductNotFoundException(Guid id) 
+            : base($"Product with ID '{id}' was not found.", "PRODUCT_NOT_FOUND", 404)
+        {
+        }
     }
 
     public class ProductCodeAlreadyExistsException : DomainException

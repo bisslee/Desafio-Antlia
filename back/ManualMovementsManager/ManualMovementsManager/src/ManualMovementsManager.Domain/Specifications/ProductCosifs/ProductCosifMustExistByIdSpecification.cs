@@ -1,6 +1,8 @@
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Repositories;
 using ManualMovementsManager.Domain.Specifications;
+using ManualMovementsManager.Domain.Exceptions;
+using System;
 using System.Threading.Tasks;
 
 namespace ManualMovementsManager.Domain.Specifications.ProductCosifs
@@ -11,15 +13,28 @@ namespace ManualMovementsManager.Domain.Specifications.ProductCosifs
 
         public ProductCosifMustExistByIdSpecification(IProductCosifReadRepository productCosifReadRepository)
         {
-            _productCosifReadRepository = productCosifReadRepository;
+            _productCosifReadRepository = productCosifReadRepository ?? throw new ArgumentNullException(nameof(productCosifReadRepository));
         }
 
-        public async Task<bool> IsSatisfiedByAsync(ProductCosif entity)
+        public bool IsSatisfiedBy(ProductCosif productCosif)
         {
-            var productCosif = await _productCosifReadRepository.GetByIdAsync(entity.Id);
-            return productCosif != null;
+            // Para compatibilidade, mas não deve ser usado
+            throw new NotImplementedException("Use IsSatisfiedByAsync for async operations");
         }
 
-        public string ErrorMessage => "Product COSIF must exist";
+        public async Task<bool> IsSatisfiedByAsync(ProductCosif productCosif)
+        {
+            if (productCosif == null || productCosif.Id == Guid.Empty)
+                throw new ProductCosifValidationException("Invalid product cosif ID provided.");
+
+            var existingProductCosif = await _productCosifReadRepository.GetByIdAsync(productCosif.Id);
+            
+            if (existingProductCosif == null)
+                throw new ProductCosifNotFoundException(productCosif.ProductCode, productCosif.CosifCode);
+
+            return true;
+        }
+
+        public string ErrorMessage => "Product cosif not found.";
     }
 } 
