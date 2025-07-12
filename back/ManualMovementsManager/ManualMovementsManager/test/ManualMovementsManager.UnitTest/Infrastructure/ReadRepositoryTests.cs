@@ -3,6 +3,7 @@ using Bogus.Extensions.Brazil;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Entities.Enums;
 using ManualMovementsManager.Infrastructure;
+using ManualMovementsManager.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace ManualMovementsManager.UnitTest.Infrastructure

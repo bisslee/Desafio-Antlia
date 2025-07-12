@@ -19,6 +19,9 @@ namespace ManualMovementsManager.Infrastructure
         // acrescentar as entidades aqui
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCosif> ProductCosifs { get; set; }
+        public DbSet<ManualMovement> ManualMovements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

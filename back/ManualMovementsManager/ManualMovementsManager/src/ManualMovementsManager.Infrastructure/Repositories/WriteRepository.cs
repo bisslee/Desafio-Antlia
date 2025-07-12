@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ManualMovementsManager.Infrastructure
+namespace ManualMovementsManager.Infrastructure.Repositories
 {
     public class WriteRepository<TEntity> : IWriteRepository<TEntity> where TEntity : class
     {

@@ -1,6 +1,6 @@
 ﻿using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Repositories;
-using ManualMovementsManager.Infrastructure;
+using ManualMovementsManager.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ManualMovementsManager.CrossCutting.DependencyInjection

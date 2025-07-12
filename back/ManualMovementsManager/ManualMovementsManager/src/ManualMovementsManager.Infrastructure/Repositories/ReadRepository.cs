@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
 
-namespace ManualMovementsManager.Infrastructure
+namespace ManualMovementsManager.Infrastructure.Repositories
 {
     public class ReadRepository<TEntity> : IReadRepository<TEntity> where TEntity : class
     {

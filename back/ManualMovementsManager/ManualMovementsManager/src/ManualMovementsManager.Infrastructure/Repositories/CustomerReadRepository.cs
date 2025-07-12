@@ -2,7 +2,7 @@
 using ManualMovementsManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace ManualMovementsManager.Infrastructure
+namespace ManualMovementsManager.Infrastructure.Repositories
 {
     public class CustomerReadRepository : ReadRepository<Customer>, ICustomerReadRepository
     {
