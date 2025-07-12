@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\IvanaSantos\.nuget\packages\biss.multisinklogger\1.0.1\contentFiles\any\net8.0\icon.ico" />
+    <Content Remove="C:\Users\IvanaSantos\.nuget\packages\biss.multisinklogger\1.0.1\contentFiles\any\net8.0\README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.0" />
+    <PackageReference Include="Biss.MultiSinkLogger" Version="1.0.1" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ManualMovements.Domain\ManualMovements.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
