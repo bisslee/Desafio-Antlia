@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Entities.Enums;
 using ManualMovementsManager.Domain.Exceptions;
@@ -63,7 +64,7 @@ namespace ManualMovementsManager.Application.Commands.ManualMovements.AddManualM
                 var errorMessage = string.Join("; ", errors);
                 Logger.LogWarning("Validation failed for AddManualMovementRequest. ProductCode: {ProductCode}, CosifCode: {CosifCode}, Errors: {Errors}", 
                     request.ProductCode, request.CosifCode, string.Join(", ", errors));
-                return ResponseBuilder.BuildValidationErrorResponse<AddManualMovementResponse, ManualMovement>(errorMessage, errors);
+                return ResponseBuilder.BuildValidationErrorResponse<AddManualMovementResponse, ManualMovementDto>(errorMessage, errors);
             }
 
             try
@@ -109,12 +110,13 @@ namespace ManualMovementsManager.Application.Commands.ManualMovements.AddManualM
                 {
                     Logger.LogInformation("ManualMovement created successfully. ID: {ManualMovementId}, ProductCode: {ProductCode}, CosifCode: {CosifCode}, LaunchNumber: {LaunchNumber}", 
                         entity.Id, entity.ProductCode, entity.CosifCode, entity.LaunchNumber);
-                    return ResponseBuilder.BuildSuccessResponse<AddManualMovementResponse, ManualMovement>(entity, "Manual movement created successfully", 201);
+                    var dto = Mapper.Map<ManualMovementDto>(entity);
+                    return ResponseBuilder.BuildSuccessResponse<AddManualMovementResponse, ManualMovementDto>(dto, "Manual movement created successfully", 201);
                 }
                 
                 Logger.LogError("Failed to create manual movement in repository. ID: {ManualMovementId}, ProductCode: {ProductCode}, CosifCode: {CosifCode}", 
                     entity.Id, entity.ProductCode, entity.CosifCode);
-                return ResponseBuilder.BuildErrorResponse<AddManualMovementResponse, ManualMovement>("Failed to create manual movement");
+                return ResponseBuilder.BuildErrorResponse<AddManualMovementResponse, ManualMovementDto>("Failed to create manual movement");
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ using FluentValidation.Results;
 using ManualMovementsManager.Application.Commands;
 using ManualMovementsManager.Application.Commands.Customers.AddCustomer;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Exceptions;
 using ManualMovementsManager.Domain.Repositories;
@@ -82,6 +83,11 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
                 Email = request.Email,
                 DocumentNumber = request.DocumentNumber
             };
+            var customerDto = new CustomerDto
+            {
+                Email = request.Email,
+                DocumentNumber = request.DocumentNumber
+            };
 
             ValidatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult());
@@ -94,6 +100,8 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
 
             MapperMock.Setup(m => m.Map<Customer>(It.IsAny<AddCustomerRequest>()))
                 .Returns(customer);
+            MapperMock.Setup(m => m.Map<CustomerDto>(It.IsAny<Customer>()))
+                .Returns(customerDto);
             
             WriteRepositoryMock.Setup(r => r.Add(It.IsAny<Customer>()))
                 .ReturnsAsync(true);

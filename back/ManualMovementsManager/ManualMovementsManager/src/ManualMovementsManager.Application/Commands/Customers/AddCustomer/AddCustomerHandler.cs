@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Repositories;
 using ManualMovementsManager.Domain.Specifications;
@@ -53,7 +54,7 @@ namespace ManualMovementsManager.Application.Commands.Customers.AddCustomer
                 var errorMessage = string.Join("; ", errors);
                 Logger.LogWarning("Validation failed for AddCustomerRequest. Email: {Email}, Errors: {Errors}", 
                     request.Email, string.Join(", ", errors));
-                return ResponseBuilder.BuildValidationErrorResponse<AddCustomerResponse, Customer>(errorMessage, errors);
+                return ResponseBuilder.BuildValidationErrorResponse<AddCustomerResponse, CustomerDto>(errorMessage, errors);
             }
 
             try
@@ -87,12 +88,13 @@ namespace ManualMovementsManager.Application.Commands.Customers.AddCustomer
                 {
                     Logger.LogInformation("Customer created successfully. ID: {CustomerId}, Email: {Email}", 
                         entity.Id, entity.Email);
-                    return ResponseBuilder.BuildSuccessResponse<AddCustomerResponse, Customer>(entity, "Customer created successfully", 201);
+                    var dto = Mapper.Map<CustomerDto>(entity);
+                    return ResponseBuilder.BuildSuccessResponse<AddCustomerResponse, CustomerDto>(dto, "Customer created successfully", 201);
                 }
                 
                 Logger.LogError("Failed to create customer in repository. ID: {CustomerId}, Email: {Email}", 
                     entity.Id, entity.Email);
-                return ResponseBuilder.BuildErrorResponse<AddCustomerResponse, Customer>("Failed to create customer");
+                return ResponseBuilder.BuildErrorResponse<AddCustomerResponse, CustomerDto>("Failed to create customer");
             }
             catch (Exception ex)
             {

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using ManualMovementsManager.Application.DTOs;
 
 namespace ManualMovementsManager.UnitTest.Api.Controllers
 {
@@ -86,7 +87,7 @@ namespace ManualMovementsManager.UnitTest.Api.Controllers
             {
                 Success = true,
                 StatusCode = 201,
-                Data = new ManualMovementsManager.Domain.Entities.Product()
+                Data = new ProductDto() // Corrigido para usar o DTO
             };
 
             MediatorMock.Setup(m => m.Send(request, It.IsAny<CancellationToken>()))

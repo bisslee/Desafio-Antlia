@@ -8,6 +8,7 @@ using ManualMovementsManager.Application.Commands.ProductCosifs.AddProductCosif;
 using ManualMovementsManager.Application.Commands.ProductCosifs.ChangeProductCosif;
 using ManualMovementsManager.Application.Commands.Products.AddProduct;
 using ManualMovementsManager.Application.Commands.Products.ChangeProduct;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Application.Queries.Customers.GetCustomer;
 using ManualMovementsManager.Application.Queries.ManualMovements.GetManualMovement;
 using ManualMovementsManager.Application.Queries.ProductCosifs.GetProductCosif;
@@ -28,6 +29,7 @@ namespace ManualMovementsManager.Application.Mapping
             CreateMap<Customer, AddCustomerResponse>().ReverseMap();
             CreateMap<Customer, AddCustomerRequest>().ReverseMap();
             CreateMap<Customer, ChangeCustomerRequest>().ReverseMap();
+            CreateMap<Customer, CustomerDto>();
 
             CreateMap<AddressRequest, Address>()
                 .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Street))
@@ -46,6 +48,7 @@ namespace ManualMovementsManager.Application.Mapping
             CreateMap<ManualMovement, AddManualMovementResponse>().ReverseMap();
             CreateMap<ManualMovement, AddManualMovementRequest>().ReverseMap();
             CreateMap<ManualMovement, ChangeManualMovementRequest>().ReverseMap();
+            CreateMap<ManualMovement, ManualMovementDto>();
 
             // Product mappings
             CreateMap<Product, GetProductResponse>().ReverseMap();
@@ -53,12 +56,14 @@ namespace ManualMovementsManager.Application.Mapping
             CreateMap<Product, AddProductResponse>().ReverseMap();
             CreateMap<Product, AddProductRequest>().ReverseMap();
             CreateMap<Product, ChangeProductRequest>().ReverseMap();
+            CreateMap<Product, ProductDto>();
 
             // ProductCosifs
             CreateMap<ProductCosif, AddProductCosifRequest>().ReverseMap();
             CreateMap<ProductCosif, AddProductCosifResponse>().ReverseMap();
             CreateMap<ProductCosif, ChangeProductCosifRequest>().ReverseMap();
             CreateMap<ProductCosif, GetProductCosifResponse>().ReverseMap();
+            CreateMap<ProductCosif, ProductCosifDto>();
 
         }
     }

@@ -14,11 +14,10 @@ using Microsoft.Extensions.Logging;
 namespace ManualMovementsManager.Api.Controllers
 {
     /// <summary>
-    /// Controller responsável por gerenciar operações relacionadas a produtos
+    /// Gerencia operações de cadastro, consulta, atualização e remoção de produtos.
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    [SwaggerTag("Gerenciamento de Produtos")]
     public class ProductController : BaseControllerHandle
     {
         private readonly IMediator Mediator;

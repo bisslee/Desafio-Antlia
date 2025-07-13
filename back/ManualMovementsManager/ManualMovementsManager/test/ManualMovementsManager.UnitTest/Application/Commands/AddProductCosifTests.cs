@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using ManualMovementsManager.Application.Commands.ProductCosifs.AddProductCosif;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Exceptions;
 using ManualMovementsManager.Domain.Repositories;
@@ -65,6 +66,12 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
                 CosifCode = request.CosifCode,
                 ClassificationCode = request.ClassificationCode
             };
+            var productCosifDto = new ProductCosifDto
+            {
+                ProductCode = request.ProductCode,
+                CosifCode = request.CosifCode,
+                ClassificationCode = request.ClassificationCode
+            };
 
             ValidatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult());
@@ -77,6 +84,8 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
 
             MapperMock.Setup(m => m.Map<ProductCosif>(It.IsAny<AddProductCosifRequest>()))
                 .Returns(productCosif);
+            MapperMock.Setup(m => m.Map<ProductCosifDto>(It.IsAny<ProductCosif>()))
+                .Returns(productCosifDto);
             
             WriteRepositoryMock.Setup(r => r.Add(It.IsAny<ProductCosif>()))
                 .ReturnsAsync(true);

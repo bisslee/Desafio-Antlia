@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Entities.Enums;
 using ManualMovementsManager.Domain.Exceptions;
@@ -55,7 +56,7 @@ namespace ManualMovementsManager.Application.Commands.Products.AddProduct
                 var errorMessage = string.Join("; ", errors);
                 Logger.LogWarning("Validation failed for AddProductRequest. ProductCode: {ProductCode}, Errors: {Errors}", 
                     request.ProductCode, string.Join(", ", errors));
-                return ResponseBuilder.BuildValidationErrorResponse<AddProductResponse, Product>(errorMessage, errors);
+                return ResponseBuilder.BuildValidationErrorResponse<AddProductResponse, ProductDto>(errorMessage, errors);
             }
 
             try
@@ -96,12 +97,13 @@ namespace ManualMovementsManager.Application.Commands.Products.AddProduct
                 {
                     Logger.LogInformation("Product created successfully. ID: {ProductId}, ProductCode: {ProductCode}", 
                         entity.Id, entity.ProductCode);
-                    return ResponseBuilder.BuildSuccessResponse<AddProductResponse, Product>(entity, "Product created successfully", 201);
+                    var dto = Mapper.Map<ProductDto>(entity);
+                    return ResponseBuilder.BuildSuccessResponse<AddProductResponse, ProductDto>(dto, "Product created successfully", 201);
                 }
                 
                 Logger.LogError("Failed to create product in repository. ID: {ProductId}, ProductCode: {ProductCode}", 
                     entity.Id, entity.ProductCode);
-                return ResponseBuilder.BuildErrorResponse<AddProductResponse, Product>("Failed to create product");
+                return ResponseBuilder.BuildErrorResponse<AddProductResponse, ProductDto>("Failed to create product");
             }
             catch (Exception ex)
             {
