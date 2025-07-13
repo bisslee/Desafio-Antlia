@@ -92,39 +92,21 @@ Esta é uma API de template para microserviços desenvolvida em .NET 9, seguindo
 - **Health Checks**: Monitoramento de saúde da aplicação
 - **CORS**: Configuração robusta de Cross-Origin Resource Sharing
 
-### Endpoints Disponíveis:
-- **GET /api/customers**: Lista todos os clientes
-- **GET /api/customers/{id}**: Obtém um cliente específico
-- **POST /api/customers**: Cria um novo cliente
-- **PUT /api/customers/{id}**: Atualiza um cliente existente
-- **DELETE /api/customers/{id}**: Remove um cliente
-
-### Códigos de Resposta:
-- **200**: Sucesso
-- **201**: Criado com sucesso
-- **400**: Requisição inválida
-- **401**: Não autorizado
-- **403**: Proibido
-- **404**: Não encontrado
-- **409**: Conflito
-- **422**: Entidade não processável
-- **500**: Erro interno do servidor
-
 ### Exemplos de Uso:
 Consulte a documentação de cada endpoint para exemplos detalhados de requisição e resposta.
                     ",
                     Contact = new OpenApiContact
                     {
                         Name = "Development Team",
-                        Email = "dev@yourcompany.com",
-                        Url = new Uri("https://yourcompany.com")
+                        Email = "ivana@biss.com.br",
+                        Url = new Uri("https://biss.com.br")
                     },
                     License = new OpenApiLicense
                     {
                         Name = "MIT License",
                         Url = new Uri("https://opensource.org/licenses/MIT")
                     },
-                    TermsOfService = new Uri("https://yourcompany.com/terms")
+                    TermsOfService = new Uri("https://biss.com.br/terms")
                 });
 
                 // Configurar autenticação JWT (preparado para futuras implementações)
