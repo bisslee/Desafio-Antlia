@@ -73,7 +73,8 @@ namespace ManualMovementsManager.Infrastructure.ContextMappings
             builder.HasOne(x => x.ProductCosif)
                    .WithMany(x => x.ManualMovements)
                    .HasForeignKey(x => new { x.ProductCode, x.CosifCode })
-                   .HasPrincipalKey(x => new { x.ProductCode, x.CosifCode });
+                   .HasPrincipalKey(x => new { x.ProductCode, x.CosifCode })
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 } 
