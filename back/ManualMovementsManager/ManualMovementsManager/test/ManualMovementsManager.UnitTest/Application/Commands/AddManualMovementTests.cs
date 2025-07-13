@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using ManualMovementsManager.Application.Commands.ManualMovements.AddManualMovement;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Exceptions;
 using ManualMovementsManager.Domain.Repositories;
@@ -80,6 +81,18 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
                 Value = request.Value,
                 LaunchNumber = 1
             };
+            var manualMovementDto = new ManualMovementDto
+            {
+                Month = request.Month,
+                Year = request.Year,
+                ProductCode = request.ProductCode,
+                CosifCode = request.CosifCode,
+                Description = request.Description,
+                MovementDate = request.MovementDate,
+                UserCode = request.UserCode,
+                Value = request.Value,
+                LaunchNumber = 1
+            };
 
             ValidatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult());
@@ -95,6 +108,8 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
 
             MapperMock.Setup(m => m.Map<ManualMovement>(It.IsAny<AddManualMovementRequest>()))
                 .Returns(manualMovement);
+            MapperMock.Setup(m => m.Map<ManualMovementDto>(It.IsAny<ManualMovement>()))
+                .Returns(manualMovementDto);
             
             WriteRepositoryMock.Setup(r => r.Add(It.IsAny<ManualMovement>()))
                 .ReturnsAsync(true);

@@ -14,11 +14,10 @@ using Microsoft.Extensions.Logging;
 namespace ManualMovementsManager.Api.Controllers
 {
     /// <summary>
-    /// Controller responsável por gerenciar operações relacionadas a movimentos manuais
+    /// Gerencia operações de cadastro, consulta, atualização e remoção de movimentos manuais.
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    [SwaggerTag("Gerenciamento de Movimentos Manuais")]
     public class ManualMovementController : BaseControllerHandle
     {
         private readonly IMediator Mediator;

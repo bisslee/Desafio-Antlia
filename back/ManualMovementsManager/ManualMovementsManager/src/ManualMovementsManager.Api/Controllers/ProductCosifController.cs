@@ -14,11 +14,11 @@ using Microsoft.Extensions.Logging;
 namespace ManualMovementsManager.Api.Controllers
 {
     /// <summary>
-    /// Controller responsável por gerenciar operações relacionadas a produtos COSIF
+    /// Gerencia operações de cadastro, consulta, atualização e remoção de produtos COSIF.
     /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
-    [SwaggerTag("Gerenciamento de Produtos COSIF")]
+    
     public class ProductCosifController : BaseControllerHandle
     {
         private readonly IMediator Mediator;

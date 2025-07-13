@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Entities.Enums;
 using ManualMovementsManager.Domain.Exceptions;
@@ -60,7 +61,7 @@ namespace ManualMovementsManager.Application.Commands.ProductCosifs.AddProductCo
                 var errorMessage = string.Join("; ", errors);
                 Logger.LogWarning("Validation failed for AddProductCosifRequest. ProductCode: {ProductCode}, CosifCode: {CosifCode}, Errors: {Errors}", 
                     request.ProductCode, request.CosifCode, string.Join(", ", errors));
-                return ResponseBuilder.BuildValidationErrorResponse<AddProductCosifResponse, ProductCosif>(errorMessage, errors);
+                return ResponseBuilder.BuildValidationErrorResponse<AddProductCosifResponse, ProductCosifDto>(errorMessage, errors);
             }
 
             try
@@ -103,12 +104,13 @@ namespace ManualMovementsManager.Application.Commands.ProductCosifs.AddProductCo
                 {
                     Logger.LogInformation("ProductCosif created successfully. ID: {ProductCosifId}, ProductCode: {ProductCode}, CosifCode: {CosifCode}", 
                         entity.Id, entity.ProductCode, entity.CosifCode);
-                    return ResponseBuilder.BuildSuccessResponse<AddProductCosifResponse, ProductCosif>(entity, "Product COSIF created successfully", 201);
+                    var dto = Mapper.Map<ProductCosifDto>(entity);
+                    return ResponseBuilder.BuildSuccessResponse<AddProductCosifResponse, ProductCosifDto>(dto, "Product COSIF created successfully", 201);
                 }
                 
                 Logger.LogError("Failed to create product cosif in repository. ID: {ProductCosifId}, ProductCode: {ProductCode}, CosifCode: {CosifCode}", 
                     entity.Id, entity.ProductCode, entity.CosifCode);
-                return ResponseBuilder.BuildErrorResponse<AddProductCosifResponse, ProductCosif>("Failed to create product COSIF");
+                return ResponseBuilder.BuildErrorResponse<AddProductCosifResponse, ProductCosifDto>("Failed to create product COSIF");
             }
             catch (Exception ex)
             {

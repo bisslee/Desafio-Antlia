@@ -66,7 +66,7 @@ namespace ManualMovementsManager.Application.Queries.ManualMovements.GetManualMo
 
                 if (request.FieldName == null)
                 {
-                    request.FieldName = "Date";
+                    request.FieldName = "MovementDate";
                 }
 
                 Logger.LogDebug("Executing paginated search. Page: {Page}, Offset: {Offset}, OrderBy: {FieldName}, Order: {Order}", 

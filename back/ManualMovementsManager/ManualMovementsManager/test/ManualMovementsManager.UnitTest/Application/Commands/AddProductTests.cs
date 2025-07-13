@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using ManualMovementsManager.Application.Commands.Products.AddProduct;
 using ManualMovementsManager.Application.Helpers;
+using ManualMovementsManager.Application.DTOs;
 using ManualMovementsManager.Domain.Entities;
 using ManualMovementsManager.Domain.Exceptions;
 using ManualMovementsManager.Domain.Repositories;
@@ -60,6 +61,11 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
                 ProductCode = request.ProductCode,
                 Description = request.Description
             };
+            var productDto = new ProductDto
+            {
+                ProductCode = request.ProductCode,
+                Description = request.Description
+            };
 
             ValidatorMock.Setup(v => v.ValidateAsync(request, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult());
@@ -70,6 +76,8 @@ namespace ManualMovementsManager.UnitTest.Application.Commands
 
             MapperMock.Setup(m => m.Map<Product>(It.IsAny<AddProductRequest>()))
                 .Returns(product);
+            MapperMock.Setup(m => m.Map<ProductDto>(It.IsAny<Product>()))
+                .Returns(productDto);
             
             WriteRepositoryMock.Setup(r => r.Add(It.IsAny<Product>()))
                 .ReturnsAsync(true);
