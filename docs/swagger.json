@@ -2,12 +2,12 @@
   "openapi": "3.0.4",
   "info": {
     "title": "ManualMovementsManager API",
-    "description": "\r\n## ManualMovementsManager API\r\n\r\nEsta é uma API de template para microserviços desenvolvida em .NET 9, seguindo as melhores práticas de Clean Architecture.\r\n\r\n### Características Principais:\r\n- **Clean Architecture**: Separação clara de responsabilidades\r\n- **CQRS Pattern**: Separação de comandos e consultas\r\n- **MediatR**: Implementação do padrão mediator\r\n- **FluentValidation**: Validação robusta de dados\r\n- **AutoMapper**: Mapeamento de objetos\r\n- **Structured Logging**: Logs estruturados com Serilog\r\n- **Global Exception Handling**: Tratamento centralizado de exceções\r\n- **Health Checks**: Monitoramento de saúde da aplicação\r\n- **CORS**: Configuração robusta de Cross-Origin Resource Sharing\r\n\r\n### Endpoints Disponíveis:\r\n- **GET /api/customers**: Lista todos os clientes\r\n- **GET /api/customers/{id}**: Obtém um cliente específico\r\n- **POST /api/customers**: Cria um novo cliente\r\n- **PUT /api/customers/{id}**: Atualiza um cliente existente\r\n- **DELETE /api/customers/{id}**: Remove um cliente\r\n\r\n### Códigos de Resposta:\r\n- **200**: Sucesso\r\n- **201**: Criado com sucesso\r\n- **400**: Requisição inválida\r\n- **401**: Não autorizado\r\n- **403**: Proibido\r\n- **404**: Não encontrado\r\n- **409**: Conflito\r\n- **422**: Entidade não processável\r\n- **500**: Erro interno do servidor\r\n\r\n### Exemplos de Uso:\r\nConsulte a documentação de cada endpoint para exemplos detalhados de requisição e resposta.\r\n                    ",
-    "termsOfService": "https://yourcompany.com/terms",
+    "description": "\r\n## ManualMovementsManager API\r\n\r\nEsta é uma API de template para microserviços desenvolvida em .NET 9, seguindo as melhores práticas de Clean Architecture.\r\n\r\n### Características Principais:\r\n- **Clean Architecture**: Separação clara de responsabilidades\r\n- **CQRS Pattern**: Separação de comandos e consultas\r\n- **MediatR**: Implementação do padrão mediator\r\n- **FluentValidation**: Validação robusta de dados\r\n- **AutoMapper**: Mapeamento de objetos\r\n- **Structured Logging**: Logs estruturados com Serilog\r\n- **Global Exception Handling**: Tratamento centralizado de exceções\r\n- **Health Checks**: Monitoramento de saúde da aplicação\r\n- **CORS**: Configuração robusta de Cross-Origin Resource Sharing\r\n\r\n### Exemplos de Uso:\r\nConsulte a documentação de cada endpoint para exemplos detalhados de requisição e resposta.\r\n                    ",
+    "termsOfService": "https://biss.com.br/terms",
     "contact": {
       "name": "Development Team",
-      "url": "https://yourcompany.com",
-      "email": "dev@yourcompany.com"
+      "url": "https://biss.com.br",
+      "email": "ivana@biss.com.br"
     },
     "license": {
       "name": "MIT License",
@@ -2933,7 +2933,7 @@
             "type": "boolean"
           },
           "data": {
-            "$ref": "#/components/schemas/Customer"
+            "$ref": "#/components/schemas/CustomerDto"
           },
           "isSuccess": {
             "type": "boolean",
@@ -3005,7 +3005,7 @@
             "type": "boolean"
           },
           "data": {
-            "$ref": "#/components/schemas/ManualMovement"
+            "$ref": "#/components/schemas/ManualMovementDto"
           },
           "isSuccess": {
             "type": "boolean",
@@ -3057,7 +3057,7 @@
             "type": "boolean"
           },
           "data": {
-            "$ref": "#/components/schemas/ProductCosif"
+            "$ref": "#/components/schemas/ProductCosifDto"
           },
           "isSuccess": {
             "type": "boolean",
@@ -3105,7 +3105,7 @@
             "type": "boolean"
           },
           "data": {
-            "$ref": "#/components/schemas/Product"
+            "$ref": "#/components/schemas/ProductDto"
           },
           "isSuccess": {
             "type": "boolean",
@@ -3879,6 +3879,53 @@
         },
         "additionalProperties": false
       },
+      "CustomerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "favoriteSport": {
+            "type": "string",
+            "nullable": true
+          },
+          "favoriteClub": {
+            "type": "string",
+            "nullable": true
+          },
+          "acceptTermsUse": {
+            "type": "boolean"
+          },
+          "acceptPrivacyPolicy": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "DataStatus": {
         "enum": [
           "created",
@@ -4631,6 +4678,52 @@
         },
         "additionalProperties": false
       },
+      "ManualMovementDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "launchNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosifCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "movementDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "MemberInfo": {
         "type": "object",
         "properties": {
@@ -5248,6 +5341,46 @@
             "items": {
               "$ref": "#/components/schemas/ManualMovement"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductCosifDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosifCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "classificationCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -6232,24 +6365,6 @@
   "security": [
     {
       "Bearer": [ ]
-    }
-  ],
-  "tags": [
-    {
-      "name": "Customer",
-      "description": "Gerenciamento de Clientes"
-    },
-    {
-      "name": "ManualMovement",
-      "description": "Gerenciamento de Movimentos Manuais"
-    },
-    {
-      "name": "Product",
-      "description": "Gerenciamento de Produtos"
-    },
-    {
-      "name": "ProductCosif",
-      "description": "Gerenciamento de Produtos COSIF"
     }
   ]
 }
