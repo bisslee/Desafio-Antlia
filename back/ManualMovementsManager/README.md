@@ -1,10 +1,46 @@
-# ManualMovementsManager
+# Desafio para Dev .net: Manual Movements Manager
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/9.0)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]
 
-Um template robusto e moderno para microserviços em .NET 9, seguindo as melhores práticas de Clean Architecture, CQRS e Domain-Driven Design.
+Sistema criado para o desafio para vaga de dev .net, robusto e moderno para gerenciamento de movimentos manuais desenvolvido em .NET 9, seguindo as melhores práticas de Clean Architecture, CQRS e Domain-Driven Design.
+
+## 🎯 Sobre o Projeto
+
+Este sistema foi desenvolvido como parte de um desafio técnico para vaga de desenvolvedor .NET, utilizando como base o template oficial da **Biss Solutions** para microserviços em .NET 9.
+
+### 🏗️ Template Base Utilizado
+
+O projeto foi criado utilizando o template oficial:
+
+```bash
+dotnet new install Biss.Solutions.MicroService.Template.Net9::2.0.0
+```
+
+**Template**: [Biss.Solutions.MicroService.Template.Net9 v2.0.0](https://www.nuget.org/packages/Biss.Solutions.MicroService.Template.Net9/2.0.0)
+
+**Criado por**: [Biss Solutions](https://biss.com.br/)
+
+O template fornece uma estrutura robusta e moderna para microserviços, incluindo:
+- Clean Architecture com separação clara de responsabilidades
+- CQRS Pattern com MediatR para comandos e consultas
+- Domain-Driven Design com foco no domínio de negócio
+- Specification Pattern para validação de regras de negócio
+- Repository Pattern com interfaces genéricas
+- SOLID Principles aplicados em todo o código
+- Observabilidade completa com logging estruturado e health checks
+- Testes unitários organizados por camada
+
+### 🎨 Adaptações Realizadas
+
+Sobre a base do template, foram implementadas as seguintes adaptações específicas para o domínio de movimentos manuais:
+
+- **Entidades de Domínio**: ManualMovement, Product, ProductCosif, Customer, Address
+- **Controllers Específicos**: Endpoints para gerenciamento de movimentos manuais
+- **Validações de Negócio**: Regras específicas para o contexto financeiro
+- **Relacionamentos**: Mapeamentos entre produtos, COSIF e movimentos
+- **Documentação**: Exemplos e documentação específica do domínio
 
 ## 🚀 Características Principais
 
@@ -12,7 +48,7 @@ Um template robusto e moderno para microserviços em .NET 9, seguindo as melhore
 
 - **Clean Architecture**: Separação clara de responsabilidades entre camadas
 - **CQRS Pattern**: Separação de comandos (Commands) e consultas (Queries)
-- **Domain-Driven Design**: Foco no domínio de negócio
+- **Domain-Driven Design**: Foco no domínio de movimentos manuais
 - **SOLID Principles**: Código limpo e manutenível
 
 ### Tecnologias e Padrões
@@ -23,11 +59,12 @@ Um template robusto e moderno para microserviços em .NET 9, seguindo as melhore
 - **FluentValidation**: Validação robusta de dados
 - **AutoMapper**: Mapeamento de objetos
 - **Swagger/OpenAPI**: Documentação automática da API
+- **Biss.MultiSinkLogger**: Sistema de logging estruturado
 
 ### Observabilidade e Monitoramento
 
-- **Structured Logging**: Logs estruturados com Serilog
-- **Health Checks**: Monitoramento de saúde da aplicação
+- **Structured Logging**: Logs estruturados com Serilog e Biss.MultiSinkLogger
+- **Health Checks**: Monitoramento detalhado de saúde da aplicação
 - **Global Exception Handling**: Tratamento centralizado de exceções
 - **Correlation IDs**: Rastreamento de requisições
 
@@ -35,7 +72,7 @@ Um template robusto e moderno para microserviços em .NET 9, seguindo as melhore
 
 - **CORS**: Configuração robusta de Cross-Origin Resource Sharing
 - **Configuration Management**: Gerenciamento de configurações por ambiente
-- **Localization**: Suporte a múltiplos idiomas
+- **Localization**: Suporte a múltiplos idiomas (pt-BR, en-US, es)
 
 ## 📁 Estrutura do Projeto
 
@@ -78,6 +115,25 @@ ManualMovementsManager/
         └── Infrastructure/                  # Testes da infraestrutura
 ```
 
+## 🏢 Domínio de Negócio
+
+O sistema gerencia **movimentos manuais** em um contexto financeiro, incluindo:
+
+### Entidades Principais
+
+- **ManualMovement**: Movimentos manuais com mês, ano, número do lançamento, produto, COSIF, descrição, data, usuário e valor
+- **Product**: Produtos com código e descrição
+- **ProductCosif**: Produtos COSIF com código do produto, código COSIF e código de classificação
+- **Customer**: Clientes com dados pessoais, endereço e preferências
+- **Address**: Endereços dos clientes
+
+### Relacionamentos
+
+- Um **Product** pode ter múltiplos **ProductCosif**
+- Um **Product** pode ter múltiplos **ManualMovement**
+- Um **ProductCosif** pode ter múltiplos **ManualMovement**
+- Um **Customer** tem um **Address**
+
 ## 🛠️ Pré-requisitos
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
@@ -89,7 +145,7 @@ ManualMovementsManager/
 ### 1. Clone o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/ManualMovementsManager.git
+git clone https://github.com/bisslee/Desafio-Antlia.git
 cd ManualMovementsManager
 ```
 
@@ -100,12 +156,12 @@ cd ManualMovementsManager
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MicroServiceTemplate;Trusted_Connection=true;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ManualMovementsManager;Trusted_Connection=true;MultipleActiveResultSets=true"
   }
 }
 ```
 
-2. Execute as migrações:
+2. Execute as migrações
 
 ```bash
 dotnet ef database update --project src/ManualMovementsManager.Infrastructure --startup-project src/ManualMovementsManager.Api
@@ -131,28 +187,100 @@ dotnet run --project src/ManualMovementsManager.Api
 
 ## 📚 Endpoints da API
 
+### Movimentos Manuais (ManualMovements)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/api/v1/manualmovement` | Lista movimentos manuais com paginação |
+| GET | `/api/v1/manualmovement/{id}` | Obtém movimento manual por ID |
+| POST | `/api/v1/manualmovement` | Cria novo movimento manual |
+| PUT | `/api/v1/manualmovement/{id}` | Atualiza movimento manual existente |
+| DELETE | `/api/v1/manualmovement/{id}` | Remove movimento manual |
+
+### Produtos (Products)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/api/v1/product` | Lista produtos com paginação |
+| GET | `/api/v1/product/{id}` | Obtém produto por ID |
+| POST | `/api/v1/product` | Cria novo produto |
+| PUT | `/api/v1/product/{id}` | Atualiza produto existente |
+| DELETE | `/api/v1/product/{id}` | Remove produto |
+
+### Produtos COSIF (ProductCosifs)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/api/v1/productcosif` | Lista produtos COSIF com paginação |
+| GET | `/api/v1/productcosif/{id}` | Obtém produto COSIF por ID |
+| POST | `/api/v1/productcosif` | Cria novo produto COSIF |
+| PUT | `/api/v1/productcosif/{id}` | Atualiza produto COSIF existente |
+| DELETE | `/api/v1/productcosif/{id}` | Remove produto COSIF |
+
 ### Clientes (Customers)
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| GET | `/api/v1/customers` | Lista clientes com paginação |
-| GET | `/api/v1/customers/{id}` | Obtém cliente por ID |
-| POST | `/api/v1/customers` | Cria novo cliente |
-| PUT | `/api/v1/customers/{id}` | Atualiza cliente existente |
-| DELETE | `/api/v1/customers/{id}` | Remove cliente |
+| GET | `/api/v1/customer` | Lista clientes com paginação |
+| GET | `/api/v1/customer/{id}` | Obtém cliente por ID |
+| POST | `/api/v1/customer` | Cria novo cliente |
+| PUT | `/api/v1/customer/{id}` | Atualiza cliente existente |
+| DELETE | `/api/v1/customer/{id}` | Remove cliente |
 
-### Exemplos de Uso
+## 📝 Exemplos de Uso
 
-#### Criar Cliente
+### Criar Movimento Manual
 
 ```bash
-curl -X POST "https://localhost:7094/api/v1/customers" \
+curl -X POST "https://localhost:7094/api/v1/manualmovement" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "month": 12,
+    "year": 2024,
+    "launchNumber": 1,
+    "productCode": "PROD001",
+    "cosifCode": "COSIF001",
+    "description": "Movimento manual de teste",
+    "movementDate": "2024-12-01T10:00:00Z",
+    "userCode": "USER001",
+    "value": 1000.50
+  }'
+```
+
+### Criar Produto
+
+```bash
+curl -X POST "https://localhost:7094/api/v1/product" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productCode": "PROD001",
+    "description": "Produto de teste"
+  }'
+```
+
+### Criar Produto COSIF
+
+```bash
+curl -X POST "https://localhost:7094/api/v1/productcosif" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productCode": "PROD001",
+    "cosifCode": "COSIF001",
+    "classificationCode": "CLASS001"
+  }'
+```
+
+### Criar Cliente
+
+```bash
+curl -X POST "https://localhost:7094/api/v1/customer" \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "João Silva",
     "email": "joao.silva@email.com",
     "documentNumber": "12345678901",
     "gender": "Male",
+    "birthDate": "1990-01-01T00:00:00Z",
     "phone": "(11) 99999-9999",
     "address": {
       "street": "Rua das Flores",
@@ -165,14 +293,16 @@ curl -X POST "https://localhost:7094/api/v1/customers" \
       "zipCode": "01234-567"
     },
     "favoriteSport": "Futebol",
-    "favoriteClub": "Corinthians"
+    "favoriteClub": "Corinthians",
+    "acceptTermsUse": true,
+    "acceptPrivacyPolicy": true
   }'
 ```
 
-#### Listar Clientes
+### Listar Movimentos Manuais
 
 ```bash
-curl -X GET "https://localhost:7094/api/v1/customers?page=1&pageSize=10&fullName=João"
+curl -X GET "https://localhost:7094/api/v1/manualmovement?page=1&pageSize=10&description=teste"
 ```
 
 ## 🔧 Configuração
@@ -184,7 +314,7 @@ curl -X GET "https://localhost:7094/api/v1/customers?page=1&pageSize=10&fullName
 ASPNETCORE_ENVIRONMENT=Development
 
 # Connection String
-ConnectionStrings__DefaultConnection=Server=localhost;Database=MicroServiceTemplate;Trusted_Connection=true
+ConnectionStrings__DefaultConnection=Server=localhost;Database=ManualMovementsManager;Trusted_Connection=true
 
 # CORS (Produção)
 Cors__AllowedOrigins__0=https://yourdomain.com
@@ -203,11 +333,40 @@ Acesse: `https://localhost:7094/health`
 
 ### Logging
 
-O projeto utiliza logging estruturado com Serilog:
+O projeto utiliza logging estruturado com Biss.MultiSinkLogger:
 
 - **Console**: Logs no console durante desenvolvimento
 - **File**: Logs em arquivo com rotação diária
 - **SQL Server**: Logs no banco de dados (opcional)
+
+Configuração no `appsettings.json`:
+
+```json
+{
+  "BissMultiSinkLogger": {
+    "MinimumLevel": "Information",
+    "Sinks": [
+      {
+        "Type": "Console",
+        "Enabled": true
+      },
+      {
+        "Type": "File",
+        "Enabled": true,
+        "Path": "logs/manualmovementsmanager-.log",
+        "RollingInterval": "Day",
+        "RetainedFileCountLimit": 30
+      }
+    ],
+    "Enrichment": {
+      "IncludeEnvironment": true,
+      "IncludeApplicationName": true,
+      "IncludeVersion": true,
+      "IncludeCorrelationId": true
+    }
+  }
+}
+```
 
 ## 🧪 Testes
 
@@ -242,10 +401,10 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ```bash
 # Build da imagem
-docker build -t microservice-template .
+docker build -t manualmovementsmanager .
 
 # Executar container
-docker run -p 7094:7094 -p 5145:5145 microservice-template
+docker run -p 7094:7094 -p 5145:5145 manualmovementsmanager
 ```
 
 ### Azure
@@ -290,10 +449,6 @@ Configure o header `Accept-Language` para usar diferentes idiomas.
 # Health geral
 curl https://localhost:7094/health
 
-# Health detalhado
-curl https://localhost:7094/health/detailed
-```
-
 ### Logs
 
 Os logs incluem:
@@ -315,12 +470,6 @@ Os logs incluem:
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## 🆘 Suporte
-
-- **Documentação**: [Wiki do Projeto](https://github.com/seu-usuario/ManualMovementsManager/wiki)
-- **Issues**: [GitHub Issues](https://github.com/seu-usuario/ManualMovementsManager/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/seu-usuario/ManualMovementsManager/discussions)
-
 ## 🙏 Agradecimentos
 
 - [Microsoft .NET Team](https://github.com/dotnet)
@@ -328,7 +477,8 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 - [FluentValidation](https://github.com/FluentValidation/FluentValidation)
 - [AutoMapper](https://github.com/AutoMapper/AutoMapper)
 - [Serilog](https://github.com/serilog/serilog)
+- [Biss.MultiSinkLogger](https://github.com/biss/multisinklogger)
 
 ---
 
-**Desenvolvido com ❤️ pela equipe de desenvolvimento**
+**Desenvolvido pela Ivana **

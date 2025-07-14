@@ -1,153 +1,182 @@
-# Manual Movements Frontend
+# Desafio para vaga Dev .NET / Angular
 
-Este é o frontend da aplicação Manual Movements, desenvolvido em Angular 18 com TypeScript e Tailwind CSS.
+Bem-vindo ao desafio técnico para a vaga de desenvolvedor(a) .NET/Angular! Este projeto consiste em um sistema completo para **gerenciamento de movimentos manuais** em um contexto financeiro, com back-end em .NET 9 (Clean Architecture, CQRS, DDD) e front-end em Angular 18 + Tailwind CSS.
 
-## Características
+---
 
-- **Angular 18**: Framework mais recente do Angular
-- **TypeScript**: Tipagem estática para melhor desenvolvimento
-- **Tailwind CSS**: Framework CSS utilitário para design responsivo
-- **Reactive Forms**: Formulários reativos com validação
-- **Componentes Standalone**: Arquitetura moderna do Angular
-- **Testes Unitários**: Cobertura de testes com Jasmine/Karma
-- **HTTP Client**: Comunicação com API REST
-- **Design Responsivo**: Interface adaptável a diferentes dispositivos
+## 📸 Exemplo de Tela
 
-## Estrutura do Projeto
+Veja abaixo um exemplo da interface principal do sistema:
 
+![Exemplo da tela de Movimentos Manuais](docs/page.png)
+
+---
+
+## 🏗️ Visão Geral do Sistema
+
+O sistema permite:
+
+- Inclusão, listagem e paginação de movimentos manuais
+- Cadastro e consulta de produtos e COSIFs
+- Validação de regras de negócio financeiras
+- Interface moderna, responsiva e amigável
+
+**Tecnologias principais:**
+
+- Back-end: .NET 9, Entity Framework Core, MediatR, FluentValidation, AutoMapper
+- Front-end: Angular 18, TypeScript, Tailwind CSS
+- Banco de dados: SQL Server
+
+---
+
+## 📁 Estrutura do Projeto
+
+```bash
+Antlia/
+├── back/ManualMovementsManager/ManualMovementsManager/src/...
+│   └── ... (API, Application, Domain, Infrastructure, CrossCutting)
+├── front/manual-movements/src/...
+│   └── ... (Angular app)
+├── scripts/
+│   └── InsertInitialData.sql, InsertProductCosifs.sql, InsertProducts.sql
+├── docs/
+│   └── page.png, swagger.json, escopo.md, modelo.html
+└── README.md (este arquivo)
 ```
-src/
-├── app/
-│   ├── components/          # Componentes reutilizáveis
-│   │   └── movement-form/   # Formulário de movimentos
-│   ├── models/              # Interfaces e tipos TypeScript
-│   │   ├── customer.model.ts
-│   │   ├── product.model.ts
-│   │   └── api-response.model.ts
-│   ├── services/            # Serviços para comunicação com API
-│   │   ├── api.service.ts
-│   │   ├── customer.service.ts
-│   │   ├── product.service.ts
-│   │   └── manual-movement.service.ts
-│   └── app.component.*      # Componente principal
-├── environments/            # Configurações de ambiente
-└── styles.css              # Estilos globais com Tailwind
-```
 
-## Pré-requisitos
+---
 
-- Node.js 18+ 
-- npm ou yarn
-- Angular CLI 18
+## 🚀 Como Executar o Projeto
 
-## Instalação
+### 1. Pré-requisitos
 
-1. Clone o repositório
-2. Navegue para a pasta do projeto:
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [Node.js 18+](https://nodejs.org/)
+- [SQL Server](https://www.microsoft.com/sql-server)
+- [Angular CLI 18](https://angular.io/cli)
+
+### 2. Back-end (.NET)
+
+1. Acesse a pasta do back-end:
+
    ```bash
-   cd front/manual-movements-frontend
+   cd back/ManualMovementsManager/ManualMovementsManager
    ```
 
-3. Instale as dependências:
+2. Configure a connection string em `src/ManualMovementsManager.Api/appsettings.json`.
+3. Execute as migrações para criar o banco:
+
+   ```bash
+   dotnet ef database update --project src/ManualMovementsManager.Infrastructure --startup-project src/ManualMovementsManager.Api
+   ```
+
+4. Popule o banco com dados de exemplo (veja seção Scripts).
+5. Rode a API:
+
+   ```bash
+   dotnet run --project src/ManualMovementsManager.Api
+   ```
+
+6. Acesse a documentação:
+
+   - Swagger: <https://localhost:7094/swagger>
+   - Health: <https://localhost:7094/health>
+
+### 3. Front-end (Angular)
+
+1. Acesse a pasta do front-end:
+
+   ```bash
+   cd front/manual-movements
+   ```
+
+2. Instale as dependências:
+
    ```bash
    npm install
    ```
 
-## Desenvolvimento
+3. Rode o servidor de desenvolvimento:
 
-Para iniciar o servidor de desenvolvimento:
+   ```bash
+   ng serve
+   ```
 
-```bash
-ng serve
+4. Acesse em: <http://localhost:4200/>
+
+---
+
+## 🗄️ Scripts de Banco de Dados
+
+Para popular o banco com dados de exemplo:
+
+1. Execute as migrações normalmente.
+2. Abra o arquivo `scripts/InsertInitialData.sql` no SQL Server Management Studio.
+3. Execute o script para inserir produtos e COSIFs.
+
+Verifique os dados com:
+
+```sql
+SELECT * FROM PRODUTO;
+SELECT * FROM PRODUTO_COSIF;
 ```
 
-O aplicativo estará disponível em `http://localhost:4200/`.
+---
 
-## Build
+## 🔗 Endpoints Principais da API
 
-Para gerar uma build de produção:
+- **Movimentos Manuais:**
+  - `GET /api/v1/manualmovement` — Lista movimentos (com paginação)
+  - `POST /api/v1/manualmovement` — Cria novo movimento
+- **Produtos:**
+  - `GET /api/v1/product` — Lista produtos
+  - `POST /api/v1/product` — Cria novo produto
+- **COSIF:**
+  - `GET /api/v1/productcosif` — Lista COSIFs
+  - `POST /api/v1/productcosif` — Cria novo COSIF
+
+Veja mais detalhes e exemplos no Swagger da API.
+
+---
+
+## 📝 Exemplos de Uso (cURL)
+
+Criar movimento manual:
 
 ```bash
-ng build
+curl -X POST "https://localhost:7094/api/v1/manualmovement" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "month": 6,
+    "year": 2025,
+    "launchNumber": 1,
+    "productCode": "CHK1",
+    "cosifCode": "1.1.1.02.01",
+    "description": "Mais uma compra",
+    "movementDate": "2025-06-01T10:00:00Z",
+    "userCode": "USER001",
+    "value": 1250.50
+  }'
 ```
 
-Os arquivos serão gerados na pasta `dist/`.
+---
 
-## Testes
+## 👩‍💻 Arquitetura e Boas Práticas
 
-Para executar os testes unitários:
+- Clean Architecture, CQRS, DDD, SOLID
+- Validações robustas (FluentValidation)
+- Logging estruturado e health checks
+- Front-end modular, responsivo e acessível
+- Testes unitários para back e front
 
-```bash
-ng test
-```
+---
 
-Para executar os testes em modo watch:
+## 🙏 Créditos e Referências
 
-```bash
-ng test --watch
-```
+- Projeto baseado no template oficial [Biss Solutions MicroService .NET 9](https://www.nuget.org/packages/Biss.Solutions.MicroService.Template.Net9/2.0.0)
+- Front-end inspirado no design do arquivo `docs/modelo.html`
+- Desenvolvido para o desafio Antlia / BNP
 
-## API
+---
 
-O frontend se conecta com a API .NET que deve estar rodando em:
-- **Desenvolvimento**: `https://localhost:7094/`
-- **Produção**: Configurado via environment
-
-## Funcionalidades
-
-### Movimentos Manuais
-- ✅ Formulário de inclusão de movimentos
-- ✅ Validação de campos obrigatórios
-- ✅ Listagem de movimentos
-- ✅ Integração com API
-
-### Produtos
-- ✅ Listagem de produtos
-- ✅ Seleção de produtos no formulário
-
-### COSIF
-- ✅ Listagem de códigos COSIF
-- ✅ Seleção de COSIF no formulário
-
-## Design System
-
-O projeto utiliza um design system baseado no arquivo `index.html` original:
-
-### Cores
-- **Primary**: `#3b82f6` (Azul)
-- **Brand Blue**: `#2D6CB8` (Azul da marca)
-- **Secondary**: `#64748b` (Cinza)
-
-### Componentes CSS
-- `.btn-primary`: Botão primário
-- `.btn-secondary`: Botão secundário
-- `.btn-outline`: Botão outline
-- `.form-input`: Campo de entrada
-- `.form-select`: Campo de seleção
-- `.card`: Container de card
-- `.table-header`: Cabeçalho de tabela
-- `.table-cell`: Célula de tabela
-
-## Melhores Práticas Implementadas
-
-1. **Arquitetura Modular**: Separação clara de responsabilidades
-2. **TypeScript**: Tipagem estática em todo o projeto
-3. **Reactive Forms**: Formulários com validação robusta
-4. **Serviços**: Comunicação com API centralizada
-5. **Componentes Standalone**: Arquitetura moderna do Angular
-6. **Testes Unitários**: Cobertura de testes
-7. **Responsividade**: Design adaptável
-8. **Acessibilidade**: Labels e estrutura semântica
-9. **Performance**: Lazy loading e otimizações
-10. **Manutenibilidade**: Código limpo e bem estruturado
-
-## Próximos Passos
-
-- [ ] Implementar autenticação
-- [ ] Adicionar paginação na listagem
-- [ ] Implementar filtros avançados
-- [ ] Adicionar gráficos e relatórios
-- [ ] Implementar cache de dados
-- [ ] Adicionar testes E2E
-- [ ] Implementar PWA
-- [ ] Adicionar internacionalização (i18n)
+**Desenvolvido por Ivana**
