@@ -1,0 +1,144 @@
+<div *ngIf="errorMessage" class="alert alert-danger mb-4 p-3 rounded border border-red-300 bg-red-50 text-red-800">
+  {{ errorMessage }}
+  <ul *ngIf="errorList.length">
+    <li *ngFor="let err of errorList">{{ err }}</li>
+  </ul>
+</div>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+  <h2 class="text-lg font-semibold text-[#2D6CB8] mb-6">Inclusão de Movimento</h2>
+
+
+
+  <form [formGroup]="movementForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Mês e Ano -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-[#2D6CB8] mb-2">Mês</label>
+        <input
+          type="number"
+          min="1"
+          max="12"
+          placeholder="MM"
+          formControlName="month"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+        <div *ngIf="movementForm.get('month')?.invalid && movementForm.get('month')?.touched"
+             class="text-red-500 text-xs mt-1">
+          {{ getMonthErrorMessage() }}
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#2D6CB8] mb-2">Ano</label>
+        <input
+          type="number"
+          min="2020"
+          max="2030"
+          placeholder="YYYY"
+          formControlName="year"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+        <div *ngIf="movementForm.get('year')?.invalid && movementForm.get('year')?.touched"
+             class="text-red-500 text-xs mt-1">
+          {{ getYearErrorMessage() }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Produtos e COSIF Row -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-[#2D6CB8] mb-2" id="produtos-label">Produtos</label>
+        <div class="relative">
+          <select
+            formControlName="productCode"
+            (change)="onProductChange()"
+            class="w-full px-3 py-2 pr-8 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm appearance-none bg-white"
+            aria-labelledby="produtos-label">
+            <option value="">Selecione o Produto</option>
+            <option *ngFor="let product of products" [value]="product.productCode">
+              {{ product.productCode }} - {{ product.description }}
+            </option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+        <div *ngIf="movementForm.get('productCode')?.invalid && movementForm.get('productCode')?.touched"
+             class="text-red-500 text-xs mt-1">
+          Produto é obrigatório
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#2D6CB8] mb-2" id="cosif-label">COSIF</label>
+        <div class="relative">
+          <select
+            formControlName="cosifCode"
+            class="w-full px-3 py-2 pr-8 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm appearance-none bg-white"
+            aria-labelledby="cosif-label">
+            <option value="">Selecione o COSIF</option>
+            <option *ngFor="let cosif of productCosifs" [value]="cosif.cosifCode">
+              {{ cosif.cosifCode }} - {{ cosif.classificationCode }}
+            </option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+            <i class="ri-arrow-down-s-line text-gray-400"></i>
+          </div>
+        </div>
+        <div *ngIf="movementForm.get('cosifCode')?.invalid && movementForm.get('cosifCode')?.touched"
+             class="text-red-500 text-xs mt-1">
+          COSIF é obrigatório
+        </div>
+      </div>
+    </div>
+
+    <!-- Valor Field -->
+    <div>
+      <label class="block text-sm font-medium text-[#2D6CB8] mb-2">Valor</label>
+      <input
+        type="number"
+        step="0.01"
+        placeholder="0.00"
+        formControlName="value"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+      <div *ngIf="movementForm.get('value')?.invalid && movementForm.get('value')?.touched"
+           class="text-red-500 text-xs mt-1">
+        {{ getValueErrorMessage() }}
+      </div>
+    </div>
+
+    <!-- Descrição Field -->
+    <div>
+      <label class="block text-sm font-medium text-[#2D6CB8] mb-2">Descrição</label>
+      <textarea
+        rows="4"
+        placeholder="Digite a descrição do movimento..."
+        formControlName="description"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm resize-none"></textarea>
+      <div *ngIf="movementForm.get('description')?.invalid && movementForm.get('description')?.touched"
+           class="text-red-500 text-xs mt-1">
+        {{ getDescriptionErrorMessage() }}
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-3 pt-4">
+      <button
+        type="button"
+        (click)="onClearClick()"
+        class="px-6 py-2 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 text-sm font-medium whitespace-nowrap">
+        Limpar
+      </button>
+      <button
+        type="button"
+        (click)="onNewClick()"
+        class="px-6 py-2 border border-primary text-primary rounded-button hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium whitespace-nowrap">
+        Novo
+      </button>
+      <button
+        type="submit"
+        [disabled]="!movementForm.valid || submitting || !isFormEnabled"
+        class="px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed">
+        <span *ngIf="submitting">Incluindo...</span>
+        <span *ngIf="!submitting">Incluir</span>
+      </button>
+    </div>
+  </form>
+</div>

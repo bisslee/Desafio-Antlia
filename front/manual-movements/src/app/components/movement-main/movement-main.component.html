@@ -1,0 +1,36 @@
+<div class="min-h-screen" style="background-color: #2D6CB8;">
+  <div class="max-w-6xl mx-auto p-6">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-white border-b-2 border-white/30 pb-2">Movimentos Manuais</h1>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-8">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+      {{ error }}
+    </div>
+
+    <!-- Form Section -->
+    <app-movement-form
+      [products]="products"
+      [productCosifs]="productCosifs"
+      (productSelected)="onProductSelected($event)"
+      (movementCreated)="onMovementCreated()"
+      (formReset)="onFormReset()">
+    </app-movement-form>
+
+    <!-- Data Grid Section -->
+    <app-movement-grid
+      [movements]="movements"
+      [page]="page"
+      [totalPages]="totalPages"
+      [total]="total"
+      (pageChange)="onPageChange($event)">
+    </app-movement-grid>
+  </div>
+</div>

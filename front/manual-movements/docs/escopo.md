@@ -13,99 +13,62 @@ Este é o frontend da aplicação Manual Movements, desenvolvido em Angular 18 c
 - **HTTP Client**: Comunicação com API REST
 - **Design Responsivo**: Interface adaptável a diferentes dispositivos
 
-## Estrutura do Projeto
+## 4. Plano de Execução - Frontend (Angular)
 
-```
-src/
-├── app/
-│   ├── components/          # Componentes reutilizáveis
-│   │   └── movement-form/   # Formulário de movimentos
-│   ├── models/              # Interfaces e tipos TypeScript
-│   │   ├── customer.model.ts
-│   │   ├── product.model.ts
-│   │   └── api-response.model.ts
-│   ├── services/            # Serviços para comunicação com API
-│   │   ├── api.service.ts
-│   │   ├── customer.service.ts
-│   │   ├── product.service.ts
-│   │   └── manual-movement.service.ts
-│   └── app.component.*      # Componente principal
-├── environments/            # Configurações de ambiente
-└── styles.css              # Estilos globais com Tailwind
-```
+A interface será uma Single Page Application (SPA) desenvolvida em Angular, com foco em reatividade e experiência do usuário.
+
+### 4.1. Estrutura dos Componentes
+
+- **`MovementMainComponent`**: Componente "inteligente" (smart component) que orquestra a página, gerencia o estado e a comunicação com os serviços.
+- **`MovementFormComponent`**: Componente "burro" (dumb component) que apenas exibe o formulário, emite eventos e recebe dados via `@Input`. Utiliza `ReactiveFormsModule` para validações.
+- **`MovementGridComponent`**: Componente "burro" que exibe os dados em uma tabela do Angular Material (`<mat-table>`). Recebe a lista de movimentos via `@Input`.
+
+### 4.2. Serviços
+
+- **`MovementService`**: Encapsula toda a lógica de comunicação com a API para obter e criar movimentos.
+- **`ProductService`**: Responsável por buscar os dados de Produtos e COSIFs para popular os `selects` do formulário.
+
+### 4.3. Fluxo de Interação do Usuário
+
+1. A página é carregada e o `MovementMainComponent` solicita ao `MovementService` a lista inicial de movimentos, que é exibida na `MovementGridComponent`.
+2. O usuário clica no botão "Novo" no `MovementFormComponent`, que habilita os campos do formulário.
+3. Os combos de "Produto" e "Cosif" são preenchidos através de chamadas ao `ProductService`.
+4. O usuário preenche o formulário e clica em "Incluir".
+5. O `MovementFormComponent` emite um evento com os dados do formulário.
+6. O `MovementMainComponent` captura o evento, chama o `MovementService` para enviar os dados à API.
+7. Após o sucesso da criação, o `MovementService` notifica o `MovementMainComponent`, que solicita a atualização da lista de movimentos.
+8. A `MovementGridComponent` é atualizada automaticamente com o novo registro.
+9. O formulário é limpo e desabilitado.
 
 ## Pré-requisitos
 
-- Node.js 18+ 
+- Node.js 18+
 - npm ou yarn
 - Angular CLI 18
-
-## Instalação
-
-1. Clone o repositório
-2. Navegue para a pasta do projeto:
-   ```bash
-   cd front/manual-movements-frontend
-   ```
-
-3. Instale as dependências:
-   ```bash
-   npm install
-   ```
-
-## Desenvolvimento
-
-Para iniciar o servidor de desenvolvimento:
-
-```bash
-ng serve
-```
-
-O aplicativo estará disponível em `http://localhost:4200/`.
-
-## Build
-
-Para gerar uma build de produção:
-
-```bash
-ng build
-```
-
-Os arquivos serão gerados na pasta `dist/`.
-
-## Testes
-
-Para executar os testes unitários:
-
-```bash
-ng test
-```
-
-Para executar os testes em modo watch:
-
-```bash
-ng test --watch
-```
 
 ## API
 
 O frontend se conecta com a API .NET que deve estar rodando em:
+
 - **Desenvolvimento**: `https://localhost:7094/`
 - **Produção**: Configurado via environment
 
 ## Funcionalidades
 
 ### Movimentos Manuais
+
 - ✅ Formulário de inclusão de movimentos
 - ✅ Validação de campos obrigatórios
 - ✅ Listagem de movimentos
 - ✅ Integração com API
 
 ### Produtos
+
 - ✅ Listagem de produtos
 - ✅ Seleção de produtos no formulário
 
 ### COSIF
+
 - ✅ Listagem de códigos COSIF
 - ✅ Seleção de COSIF no formulário
 
@@ -114,11 +77,13 @@ O frontend se conecta com a API .NET que deve estar rodando em:
 O projeto utiliza um design system baseado no arquivo `index.html` original:
 
 ### Cores
+
 - **Primary**: `#3b82f6` (Azul)
 - **Brand Blue**: `#2D6CB8` (Azul da marca)
 - **Secondary**: `#64748b` (Cinza)
 
 ### Componentes CSS
+
 - `.btn-primary`: Botão primário
 - `.btn-secondary`: Botão secundário
 - `.btn-outline`: Botão outline
@@ -140,14 +105,3 @@ O projeto utiliza um design system baseado no arquivo `index.html` original:
 8. **Acessibilidade**: Labels e estrutura semântica
 9. **Performance**: Lazy loading e otimizações
 10. **Manutenibilidade**: Código limpo e bem estruturado
-
-## Próximos Passos
-
-- [ ] Implementar autenticação
-- [ ] Adicionar paginação na listagem
-- [ ] Implementar filtros avançados
-- [ ] Adicionar gráficos e relatórios
-- [ ] Implementar cache de dados
-- [ ] Adicionar testes E2E
-- [ ] Implementar PWA
-- [ ] Adicionar internacionalização (i18n)

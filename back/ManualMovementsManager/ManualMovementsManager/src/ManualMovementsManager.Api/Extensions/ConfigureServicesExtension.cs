@@ -57,7 +57,6 @@ namespace ManualMovementsManager.Api.Extensions
                     {
                         options.JsonSerializerOptions.Converters.Add(converter);
                     }
-                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
 
             services.AddEndpointsApiExplorer();
